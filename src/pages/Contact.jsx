@@ -84,7 +84,11 @@ const Contact = () => {
               {t("contact.form.title")}
             </h2>
 
-            <form className="space-y-6">
+            <form
+              className="space-y-6"
+              method="POST"
+              action="https://formsubmit.co/ff899774796e0791f4a48696622e743a"
+            >
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <label className="block text-gray-700 mb-2">
@@ -92,6 +96,7 @@ const Contact = () => {
                   </label>
                   <input
                     type="text"
+                    name="name"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                   />
@@ -103,6 +108,7 @@ const Contact = () => {
                   </label>
                   <input
                     type="email"
+                    name="email"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                     required
                   />
@@ -113,7 +119,10 @@ const Contact = () => {
                 <label className="block text-gray-700 mb-2">
                   {t("contact.form.subject")}
                 </label>
-                <select className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <select
+                  name="subject"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
                   <option>{t("contact.form.subject.support")}</option>
                   <option>{t("contact.form.subject.partnership")}</option>
                   <option>{t("contact.form.subject.press")}</option>
@@ -127,10 +136,16 @@ const Contact = () => {
                 </label>
                 <textarea
                   rows="5"
+                  name="message"
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 ></textarea>
               </div>
+              <input
+                type="hidden"
+                name="_next"
+                value="https://fanciful-pithivier-c2bb32.netlify.app/"
+              ></input>
 
               <button
                 type="submit"
@@ -217,3 +232,5 @@ const Contact = () => {
 };
 
 export default Contact;
+
+//vnfu fqvl ytbd vbaf
