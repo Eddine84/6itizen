@@ -151,7 +151,7 @@ const Contact = () => {
               href="mailto:support@6itizen.ch"
               className="text-blue-600 hover:underline"
             >
-              support@6itizen.ch
+              support@6itizen.com
             </a>
           </div>
 
