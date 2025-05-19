@@ -1,4 +1,4 @@
-import React from "react";
+import { useState, useEffect } from "react";
 import {
   FiMail,
   FiPhone,
@@ -9,13 +9,122 @@ import {
   FiFacebook,
 } from "react-icons/fi";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+const initialForm = {
+  name: "",
+  email: "",
+  subject: "",
+  message: "",
+};
 
 const Contact = () => {
   const { t } = useTranslation();
+  const [form, setForm] = useState(initialForm);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false);
+  const [formErrors, setFormErrors] = useState({});
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (success) {
+      const timer = setTimeout(() => {
+        navigate("/");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [success, navigate]);
+
+  const validate = () => {
+    const errors = {};
+    if (!form.name.trim()) errors.name = t("contact.form.error.name");
+    if (!form.email.trim() || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(form.email))
+      errors.email = t("contact.form.error.email");
+    if (!form.message.trim()) errors.message = t("contact.form.error.message");
+    return errors;
+  };
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+    setFormErrors({ ...formErrors, [e.target.name]: "" });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (sending) return;
+
+    const errors = validate();
+    if (Object.keys(errors).length) {
+      setFormErrors(errors);
+      return;
+    }
+
+    setSending(true);
+    setError("");
+    try {
+      const data = {
+        name: form.name,
+        email: form.email,
+        subject: form.subject || t("contact.form.subject.support"),
+        message: form.message,
+      };
+      await axios.post(
+        "https://formsubmit.co/7914d08a6185d2c27a2b7bbf41138feb",
+        data
+      );
+      setSuccess(true);
+      setForm(initialForm);
+    } catch (err) {
+      setError(
+        t("contact.form.error.global") ||
+          "Erreur lors de l'envoi, veuillez rafraîchir la page."
+      );
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <div className="overflow-hidden">
-      {/* Hero Section */}
+      {/* Success Modal */}
+      {success && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          aria-live="polite"
+        >
+          <div className="bg-white p-8 rounded-lg text-center animate-fade-in shadow-2xl">
+            <p className="text-xl font-semibold mb-4">
+              {t("contact.form.success") || "Message envoyé avec succès !"}
+            </p>
+            <p>
+              {t("contact.form.success.redirect") ||
+                "Redirection automatique dans 3 secondes..."}
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Error Modal */}
+      {error && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          aria-live="assertive"
+        >
+          <div className="bg-white p-8 rounded-lg text-center animate-fade-in shadow-2xl">
+            <p className="text-xl font-semibold mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              {t("contact.form.error.refresh") || "Rafraîchir la page"}
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Hero */}
       <section className="pt-28 pb-20 px-6 bg-gradient-to-b from-blue-50 to-white">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-600 to-blue-400 bg-clip-text text-transparent mb-6">
@@ -84,75 +193,114 @@ const Contact = () => {
               {t("contact.form.title")}
             </h2>
 
-            <form
-              className="space-y-6"
-              method="POST"
-              action="https://formsubmit.co/ff899774796e0791f4a48696622e743a"
-            >
+            <form className="space-y-6" onSubmit={handleSubmit} noValidate>
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-gray-700 mb-2">
+                  <label htmlFor="name" className="block text-gray-700 mb-2">
                     {t("contact.form.name")}
                   </label>
                   <input
+                    id="name"
                     type="text"
                     name="name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={form.name}
+                    onChange={handleChange}
+                    disabled={sending}
+                    className={`w-full px-4 py-3 border ${
+                      formErrors.name ? "border-red-500" : "border-gray-300"
+                    } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                     required
+                    autoComplete="name"
                   />
+                  {formErrors.name && (
+                    <span className="text-red-500 text-sm">
+                      {formErrors.name}
+                    </span>
+                  )}
                 </div>
 
                 <div>
-                  <label className="block text-gray-700 mb-2">
+                  <label htmlFor="email" className="block text-gray-700 mb-2">
                     {t("contact.form.email")}
                   </label>
                   <input
+                    id="email"
                     type="email"
                     name="email"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    value={form.email}
+                    onChange={handleChange}
+                    disabled={sending}
+                    className={`w-full px-4 py-3 border ${
+                      formErrors.email ? "border-red-500" : "border-gray-300"
+                    } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                     required
+                    autoComplete="email"
                   />
+                  {formErrors.email && (
+                    <span className="text-red-500 text-sm">
+                      {formErrors.email}
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div>
-                <label className="block text-gray-700 mb-2">
+                <label htmlFor="subject" className="block text-gray-700 mb-2">
                   {t("contact.form.subject")}
                 </label>
                 <select
+                  id="subject"
                   name="subject"
+                  value={form.subject}
+                  onChange={handleChange}
+                  disabled={sending}
                   className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 >
-                  <option>{t("contact.form.subject.support")}</option>
-                  <option>{t("contact.form.subject.partnership")}</option>
-                  <option>{t("contact.form.subject.press")}</option>
-                  <option>{t("contact.form.subject.other")}</option>
+                  <option value="">{t("contact.form.subject.support")}</option>
+                  <option value={t("contact.form.subject.partnership")}>
+                    {t("contact.form.subject.partnership")}
+                  </option>
+                  <option value={t("contact.form.subject.press")}>
+                    {t("contact.form.subject.press")}
+                  </option>
+                  <option value={t("contact.form.subject.other")}>
+                    {t("contact.form.subject.other")}
+                  </option>
                 </select>
               </div>
 
               <div>
-                <label className="block text-gray-700 mb-2">
+                <label htmlFor="message" className="block text-gray-700 mb-2">
                   {t("contact.form.message")}
                 </label>
                 <textarea
+                  id="message"
                   rows="5"
                   name="message"
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  value={form.message}
+                  onChange={handleChange}
+                  disabled={sending}
+                  className={`w-full px-4 py-3 border ${
+                    formErrors.message ? "border-red-500" : "border-gray-300"
+                  } rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent`}
                   required
                 ></textarea>
+                {formErrors.message && (
+                  <span className="text-red-500 text-sm">
+                    {formErrors.message}
+                  </span>
+                )}
               </div>
-              <input
-                type="hidden"
-                name="_next"
-                value="https://fanciful-pithivier-c2bb32.netlify.app/"
-              ></input>
 
               <button
+                className="w-full bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                 type="submit"
-                className="w-full bg-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                disabled={sending}
               >
                 <FiSend className="w-5 h-5" />
-                {t("contact.form.submit")}
+                {sending
+                  ? t("contact.form.sending") || "Envoi en cours..."
+                  : t("contact.form.submit")}
               </button>
             </form>
           </div>
@@ -173,64 +321,8 @@ const Contact = () => {
           ></iframe>
         </div>
       </section>
-
-      {/* Social Links */}
-      {/* <section className="py-20 bg-white text-center">
-        <div className="max-w-7xl mx-auto px-6">
-          <h3 className="text-2xl font-bold text-gray-900 mb-6">
-            {t("contact.social.title")}
-          </h3>
-          <div className="flex justify-center gap-6">
-            <a
-              href="https://twitter.com/6itizen"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              <FiTwitter className="w-8 h-8" />
-            </a>
-            <a
-              href="https://linkedin.com/company/6itizen"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              <FiLinkedin className="w-8 h-8" />
-            </a>
-            <a
-              href="https://facebook.com/6itizen"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="p-3 text-gray-600 hover:text-blue-600 transition-colors"
-            >
-              <FiFacebook className="w-8 h-8" />
-            </a>
-          </div>
-        </div>
-      </section> */}
-
-      {/* CTA Footer */}
-      {/* <section className="bg-blue-600 text-white py-16 text-center">
-        <div className="max-w-4xl mx-auto px-6">
-          <h3 className="text-2xl font-bold mb-6">
-            {t("contact.newsletter.title")}
-          </h3>
-          <div className="max-w-md mx-auto flex gap-4">
-            <input
-              type="email"
-              placeholder={t("contact.newsletter.placeholder")}
-              className="flex-1 px-6 py-3 rounded-lg text-gray-900"
-            />
-            <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 transition-colors">
-              {t("contact.newsletter.button")}
-            </button>
-          </div>
-        </div>
-      </section> */}
     </div>
   );
 };
 
 export default Contact;
-
-//vnfu fqvl ytbd vbaf
