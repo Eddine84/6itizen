@@ -203,5 +203,7 @@
 
   "about.contact.banner": "🚀 6itizen is currently in development.",
   "about.contact.text": "Ideas, questions, or want to follow the project? Get in touch.",
-  "about.contact.button": "Write to us"
+  "about.contact.button": "Write to us",
+  "contact.form.success": "Message sent successfully!",
+  "contact.form.success.redirect": "Automatic redirection in 3 seconds..."
 }
