@@ -90,11 +90,11 @@ const Landing = () => {
               </Link>
             </div>
           </div>
-          <div className="relative lg:w-[55%] flex justify-center items-end overflow-hidden">
+          <div className="relative lg:w-[55%] flex justify-center items-end overflow-hidden transform rotate-2 rounded-xl">
             <img
               src={illustration}
               alt="Interface 6itizen"
-              className="w-full max-w-xl md:max-w-2xl lg:w-[120%] xl:w-[140%] transition-all duration-300 object-contain object-center"
+              className="w-full max-w-xl md:max-w-2xl lg:w-[120%] xl:w-[140%] transition-all duration-300 object-contain object-center rounded-xl"
             />
           </div>
         </div>

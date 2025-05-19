@@ -9,6 +9,7 @@ import Logo from "./Logo";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLangOpen, setIsLangOpen] = useState(false);
+  const [selectedLan, setSelectLang] = useState("fr");
   const { t, i18n } = useTranslation();
 
   const navLinks = [
@@ -52,6 +53,7 @@ const Navbar = () => {
 
           {/* Right Section */}
           <div className="flex items-center space-x-4">
+            <span>{selectedLan}</span>
             {/* Language Selector */}
             <div className="relative">
               <button
@@ -69,9 +71,8 @@ const Navbar = () => {
                       key={lang.code}
                       className="w-full px-4 py-2.5 text-left text-gray-700 hover:bg-blue-50 hover:text-blue-600 transition-colors"
                       onClick={() => {
-                        console.log(lang.code);
                         i18n.changeLanguage(lang.code);
-
+                        setSelectLang(lang.code);
                         setIsLangOpen(false); // Ferme le menu après sélection
                       }}
                     >
