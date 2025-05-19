@@ -1,5 +1,6 @@
 import React from "react";
 import illustration from "../assets/6itizen_illustration_transparent.png";
+import video from "../assets/video.gif";
 import { Link } from "react-router-dom";
 import {
   FiAlertCircle,
@@ -68,7 +69,7 @@ const Landing = () => {
   return (
     <div className="overflow-hidden">
       <section className="relative py-20 px-6 lg:py-28 bg-gradient-to-b from-blue-50 to-white">
-        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-12 items-center landing-header">
           <div className="space-y-6 relative z-10">
             <span className="inline-block bg-blue-100 text-blue-800 px-4 py-1 rounded-full text-sm font-medium">
               {t("hero.badge")}
@@ -90,12 +91,8 @@ const Landing = () => {
               </Link>
             </div>
           </div>
-          <div className="relative lg:w-[55%] flex justify-center items-end overflow-hidden transform rotate-2 rounded-xl">
-            <img
-              src={illustration}
-              alt="Interface 6itizen"
-              className="w-full max-w-xl md:max-w-2xl lg:w-[120%] xl:w-[140%] transition-all duration-300 object-contain object-center rounded-xl"
-            />
+          <div class="video-container-phone">
+            <img src={video} alt="Interface 6itizen" class="video-preview" />
           </div>
         </div>
       </section>
@@ -170,7 +167,7 @@ const Landing = () => {
             </Link>
 
             <Link
-              to="https://willowy-pasca-a05473.netlify.app/"
+              to="https://spontaneous-nougat-5139a9.netlify.app/"
               className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg transition-colors"
             >
               {t("cta.button_beta")}
