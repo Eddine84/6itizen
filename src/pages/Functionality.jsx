@@ -28,13 +28,13 @@ const Functionality = () => {
       icon: <FiMic className="w-6 h-6" />,
       title: t("about.tech_features.f2.title"),
       content: t("about.tech_features.f2.content"),
-      tech: ["Web Speech API", "Python NLP"],
+      tech: ["Web Speech API"],
     },
     {
       icon: <FiCpu className="w-6 h-6" />,
       title: t("about.tech_features.f3.title"),
       content: t("about.tech_features.f3.content"),
-      tech: ["TensorFlow", "BERT", "FastAPI"],
+      tech: ["LM Studio (DeepSeek Coder)", "OpenAI ChatGPT API"],
     },
     {
       icon: <FiGitBranch className="w-6 h-6" />,
@@ -170,16 +170,14 @@ const Functionality = () => {
                   {t("about.tech_stack.infra")}
                 </h3>
                 <div className="flex flex-wrap gap-2">
-                  {["AWS EC2", "S3 Bucket", "Cloudflare", "GitHub Actions"].map(
-                    (tech, i) => (
-                      <span
-                        key={i}
-                        className="px-3 py-1 bg-white border text-gray-600 text-sm rounded-full"
-                      >
-                        {tech}
-                      </span>
-                    )
-                  )}
+                  {["AWS", "S3 Bucket", "GitHub Actions"].map((tech, i) => (
+                    <span
+                      key={i}
+                      className="px-3 py-1 bg-white border text-gray-600 text-sm rounded-full"
+                    >
+                      {tech}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
