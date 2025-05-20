@@ -5,6 +5,7 @@ import Landing from "./pages/Landing";
 import About from "./pages/About";
 import Functionality from "./pages/Functionality";
 import Contact from "./pages/Contact";
+
 const router = createBrowserRouter([
   {
     path: "/",

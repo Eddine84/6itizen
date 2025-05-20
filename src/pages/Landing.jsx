@@ -91,8 +91,12 @@ const Landing = () => {
               </Link>
             </div>
           </div>
-          <div class="video-container-phone">
-            <img src={video} alt="Interface 6itizen" class="video-preview" />
+          <div className="video-container-phone">
+            <img
+              src={video}
+              alt="Interface 6itizen"
+              className="video-preview"
+            />
           </div>
         </div>
       </section>
