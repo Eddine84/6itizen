@@ -12,7 +12,7 @@ import {
   FiUsers,
 } from "react-icons/fi";
 import photo_eddine from "../assets/photo_eddine.jpg";
-import photo_hocine from "../assets/photo_hocine.jpg";
+import photo_paulo from "../assets/paulo_simoes.jpeg";
 import { useTranslation } from "react-i18next";
 
 const Functionality = () => {
@@ -66,10 +66,10 @@ const Functionality = () => {
     },
     {
       role: "Co-fondateur · Communication",
-      name: "Hocine Hamel",
-      bio: "Stratège partenariats publics/privés et gestion de projet",
-      expertise: ["Gestion de projet", "RH", "Finance"],
-      photo: photo_hocine, // <- importé en haut du fichier
+      name: "Paulo Simões",
+      bio: "Human Factors, Stratège partenariats publics/privés et gestion de projet",
+      expertise: ["Gestion de projet", "Human Factors", "Usability"],
+      photo: photo_paulo,
     },
   ];
 
