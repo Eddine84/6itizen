@@ -171,7 +171,7 @@ const Landing = () => {
             </Link>
 
             <Link
-              to="https://spontaneous-nougat-5139a9.netlify.app/"
+              to="https://willowy-pasca-a05473.netlify.app/"
               className="border-2 border-white text-white hover:bg-white hover:text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg transition-colors"
             >
               {t("cta.button_beta")}
